@@ -14,6 +14,9 @@ import CreateLead from './pages/CreateLead';
 import Leads from './pages/Leads';
 import LeadData from './pages/LeadData';
 import Error from './pages/Error';
+import User from './pages/User';
+import ExportCSV from './pages/ExportCSV';
+import Profile from './pages/Profile'
 
 const router = createBrowserRouter([
   {
@@ -46,6 +49,17 @@ const router = createBrowserRouter([
     path:"/LeadData/:id",
     element:<LeadData/>,
      errorElement:<Error/>
+  },
+  {
+    path:"/User",
+    element:<User/>
+  },{
+    path:"/CSVExport",
+    element:<ExportCSV/>
+  },
+  {
+    path:"/Profile",
+    element:<Profile/>
   }
 ])
 

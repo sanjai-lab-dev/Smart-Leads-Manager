@@ -1,25 +1,35 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
 import Input from '../components/Input'
 import Button from '../components/Button'
+import { apiPost } from '../api'
 
 export default function CreateLead() {
+
+  const navigate = useNavigate()
+
   const [leadData, setLeadData] = useState({
     name: '',
     email: '',
     status: 'New',
     source: 'Website',
-    paid: undefined
+    paid: undefined as number | undefined,
+    date: '',
+    time: ''
   })
+
+  const [error, setError] = useState('')
 
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement
     >
   ) => {
-    const { name, value } = e.target;
+
+    const { name, value } = e.target
 
     setLeadData({
       ...leadData,
@@ -27,32 +37,25 @@ export default function CreateLead() {
         name === "paid"
           ? Number(value)
           : value,
-    });
-  };
+    })
+  }
 
   const handleSubmit = async (
     e: React.FormEvent
   ) => {
-    e.preventDefault();
+
+    e.preventDefault()
+    setError('')
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/NewLead",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
 
-          body: JSON.stringify(leadData),
-        }
-      );
+      const response = await apiPost('/leads', leadData)
 
-      const data = await response.json();
-
-      console.log(data);
+      const data = await response.json()
 
       if (response.ok) {
+
+        alert("Lead Created Successfully")
 
         // Reset form
         setLeadData({
@@ -60,35 +63,49 @@ export default function CreateLead() {
           email: "",
           status: "New",
           source: "Website",
-          paid: undefined
-        });
+          paid: undefined,
+          date: '',
+          time: ''
+        })
+
+        navigate('/Leads')
+
       } else {
-        alert(data.message);
+
+        setError(data.message || 'Failed to create lead')
       }
 
     } catch (error) {
-      console.error(error);
 
-      alert("Server Error");
+      console.error(error)
+
+      setError("Server connection failed")
     }
-  };
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100 ">
+    <div className="min-h-screen bg-gray-100">
 
       {/* Navbar */}
-      <Navbar />
+      <div className="fixed top-0 left-0 w-full z-50 shadow-md">
+        <Navbar />
+      </div>
 
-      <div className="flex">
+      <div className="flex pt-16">
 
         {/* Sidebar */}
-        <Sidebar />
+        <div className="fixed left-0 top-16 h-full w-64 bg-white shadow-lg z-40">
+          <Sidebar />
+        </div>
 
         {/* Main Content */}
-        <main className="flex-1 p-8 ">
+        <main className="ml-64 flex-1 p-8">
 
-          {/* Page Heading */}
           <div className='flex justify-center items-center flex-col'>
+
+            {/* Heading */}
             <div className="mb-8">
+
               <h1 className="text-3xl font-bold text-gray-800">
                 Create Lead
               </h1>
@@ -96,9 +113,19 @@ export default function CreateLead() {
               <p className="text-gray-500 mt-2">
                 Add a new customer lead
               </p>
+
             </div>
-            {/* Form Card */}
+
+            {/* Error */}
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl text-center w-full sm:w-[80%] md:w-[60%]">
+                {error}
+              </div>
+            )}
+
+            {/* Form */}
             <div className="bg-white p-8 rounded-2xl shadow-md w-full sm:w-[80%] md:w-[60%]">
+
               <form
                 onSubmit={handleSubmit}
                 className="space-y-6"
@@ -126,6 +153,7 @@ export default function CreateLead() {
 
                 {/* Status */}
                 <div>
+
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Lead Status
                   </label>
@@ -136,6 +164,7 @@ export default function CreateLead() {
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
+
                     <option value="New">
                       New
                     </option>
@@ -151,11 +180,13 @@ export default function CreateLead() {
                     <option value="Closed">
                       Closed
                     </option>
+
                   </select>
                 </div>
 
                 {/* Source */}
                 <div>
+
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Lead Source
                   </label>
@@ -166,44 +197,69 @@ export default function CreateLead() {
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="New">Website</option>
+
+                    <option value="Website">
+                      Website
+                    </option>
+
                     <option value="Referral">
                       Referral
                     </option>
+
                     <option value="Instagram">
                       Instagram
                     </option>
-                    <option value="Instagram">
-                      Instagram
-                    </option>
+
                     <option value="Facebook">
                       Facebook
                     </option>
+
                     <option value="LinkedIn">
                       LinkedIn
                     </option>
 
                   </select>
-                  <Input
-                    label="Amount Paid"
-                    type="number"
-                    name="paid"
-                    value={leadData.paid}
-                    placeholder="Enter amount"
-                    onChange={handleChange}
-                  />
                 </div>
+
+                {/* Paid Amount */}
+                <Input
+                  label="Amount Paid"
+                  type="number"
+                  name="paid"
+                  value={leadData.paid || ""}
+                  placeholder="Enter amount"
+                  onChange={handleChange}
+                />
+
+                {/* Date */}
+                <Input
+                  label="Date"
+                  type="date"
+                  name="date"
+                  value={leadData.date}
+                  onChange={handleChange}
+                />
+
+                {/* Time */}
+                <Input
+                  label="Time"
+                  type="time"
+                  name="time"
+                  value={leadData.time}
+                  onChange={handleChange}
+                />
 
                 {/* Submit Button */}
                 <Button
                   text="Create Lead"
                   type="submit"
                 />
+
               </form>
             </div>
           </div>
-        </main >
-      </div >
-    </div >
+        </main>
+      </div>
+    </div>
   )
 }

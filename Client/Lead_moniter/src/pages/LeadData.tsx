@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import { apiGet, apiPut } from "../api";
 
 export default function LeadDetails() {
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -13,119 +15,102 @@ export default function LeadDetails() {
     status: "New",
     source: "Website",
     paid: 0,
+    date: "",
+    time: ""
   });
 
   const [loading, setLoading] = useState(true);
 
   // Fetch Lead Data
   const fetchLead = async () => {
+
     try {
-      const response = await fetch(
-        `http://localhost:5000/leads/${id}`
-      );
+
+      const response = await apiGet(`/leads/${id}`);
 
       const data = await response.json();
 
-      setLead(data);
+      if (response.ok) {
+        // Handle _id removal mapping to state 
+        const { _id, __v, ...rest } = data.data;
+        setLead(rest);
+      } else {
+        alert(data.message || "Failed to fetch lead");
+      }
+
       setLoading(false);
 
     } catch (error) {
+
       console.log(error);
+
       setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchLead();
-  }, []);
-  const handleDelete = async () => {
+  }, [id]);
 
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this lead?"
-    );
-
-    if (!confirmDelete) return;
-
-    try {
-
-      const response = await fetch(
-        `http://localhost:5000/DeleteLead/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      const data = await response.json();
-
-      console.log(data);
-
-      alert("Lead Deleted Successfully");
-
-      navigate("/leads");
-
-    } catch (error) {
-
-      console.log(error);
-
-      alert("Failed to Delete Lead");
-    }
-  };
   // Update Lead
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
+
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/EditLead",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id,
-            ...lead,
-          }),
-        }
-      );
+
+      const response = await apiPut(`/leads/${id}`, lead);
 
       const data = await response.json();
 
-      console.log(data);
-
-      alert("Lead Updated Successfully");
-
-      navigate("/leads");
+      if (response.ok) {
+        alert("Lead Updated Successfully");
+        navigate("/leads");
+      } else {
+        alert(data.message || "Failed to update lead");
+      }
 
     } catch (error) {
+
       console.log(error);
-      alert("Failed to Update Lead");
+
+      alert("Server connection failed");
     }
   };
 
   if (loading) {
-    return <h1 className="p-10 text-2xl">Loading...</h1>;
+    return (
+      <h1 className="p-10 text-2xl">
+        Loading...
+      </h1>
+    );
   }
 
   return (
     <div className="flex min-h-screen bg-gray-100">
 
-      {/* Sidebar */}
-      <Sidebar />
-
-      <div className="flex-1">
-
-        {/* Navbar */}
+      {/* Navbar */}
+      <div className="fixed top-0 w-full z-50 shadow-md">
         <Navbar />
+      </div>
 
-        <div className="p-10">
-          <h1 className="text-3xl font-bold mb-6">
+      <div className="flex pt-16 w-full">
+        {/* Sidebar */}
+        <div className="fixed left-0 top-16 h-full w-64 bg-white shadow-lg z-40">
+          <Sidebar />
+        </div>
+
+        {/* Main Content */}
+        <main className="flex-1 ml-64 p-10">
+
+          <h1 className="text-3xl font-bold mb-6 text-gray-800">
             Edit Lead
           </h1>
 
           <div className="bg-white p-8 rounded-xl shadow-md max-w-2xl">
+
             <form
               onSubmit={handleSubmit}
               className="space-y-5"
@@ -133,7 +118,8 @@ export default function LeadDetails() {
 
               {/* Name */}
               <div className="flex flex-col">
-                <label className="font-semibold mb-1">
+
+                <label className="font-semibold mb-1 text-gray-700">
                   Name
                 </label>
 
@@ -146,13 +132,15 @@ export default function LeadDetails() {
                       name: e.target.value,
                     })
                   }
-                  className="border p-3 rounded-lg"
+                  className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
                 />
               </div>
 
               {/* Email */}
               <div className="flex flex-col">
-                <label className="font-semibold mb-1">
+
+                <label className="font-semibold mb-1 text-gray-700">
                   Email
                 </label>
 
@@ -165,13 +153,15 @@ export default function LeadDetails() {
                       email: e.target.value,
                     })
                   }
-                  className="border p-3 rounded-lg"
+                  className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
                 />
               </div>
 
               {/* Status */}
               <div className="flex flex-col">
-                <label className="font-semibold mb-1">
+
+                <label className="font-semibold mb-1 text-gray-700">
                   Status
                 </label>
 
@@ -183,59 +173,73 @@ export default function LeadDetails() {
                       status: e.target.value,
                     })
                   }
-                  className="border p-3 rounded-lg"
+                  className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="New">New</option>
-                  <option value="Contacted">
-                    Pending
+
+                  <option value="New">
+                    New
                   </option>
+
+                  <option value="Contacted">
+                    Contacted
+                  </option>
+
                   <option value="Qualified">
                     Qualified
                   </option>
+
                   <option value="Closed">
-                    Compltete
+                    Closed
                   </option>
+
                 </select>
               </div>
 
               {/* Source */}
               <div className="flex flex-col">
-                <label className="font-semibold mb-1">
+
+                <label className="font-semibold mb-1 text-gray-700">
                   Source
                 </label>
-                
+
                 <select
-                  value={lead.status}
+                  value={lead.source}
                   onChange={(e) =>
                     setLead({
                       ...lead,
                       source: e.target.value,
                     })
                   }
-                  className="border p-3 rounded-lg"
+                  className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="New">Website</option>
+
+                  <option value="Website">
+                    Website
+                  </option>
+
                   <option value="Referral">
                     Referral
                   </option>
+
                   <option value="Instagram">
                     Instagram
                   </option>
-                  <option value="Instagram">
-                    Instagram
-                  </option>
+
                   <option value="Facebook">
                     Facebook
                   </option>
+
                   <option value="LinkedIn">
                     LinkedIn
                   </option>
-                </select>
 
+                </select>
               </div>
+
               {/* Paid */}
               <div className="flex flex-col">
-                <label className="font-semibold mb-1">
+
+                <label className="font-semibold mb-1 text-gray-700">
                   Paid
                 </label>
 
@@ -248,30 +252,61 @@ export default function LeadDetails() {
                       paid: Number(e.target.value),
                     })
                   }
-                  className="border p-3 rounded-lg"
+                  className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* Date */}
+              <div className="flex flex-col">
+
+                <label className="font-semibold mb-1 text-gray-700">
+                  Date
+                </label>
+
+                <input
+                  type="date"
+                  value={lead.date}
+                  onChange={(e) =>
+                    setLead({
+                      ...lead,
+                      date: e.target.value,
+                    })
+                  }
+                  className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* Time */}
+              <div className="flex flex-col">
+
+                <label className="font-semibold mb-1 text-gray-700">
+                  Time
+                </label>
+
+                <input
+                  type="time"
+                  value={lead.time}
+                  onChange={(e) =>
+                    setLead({
+                      ...lead,
+                      time: e.target.value,
+                    })
+                  }
+                  className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
               {/* Button */}
               <button
                 type="submit"
-                className="bg-blue-200 rounded-2xl p-4  text-blue-900 transform duration-100 hover:translate-x-1.5 hover:bg-blue-100 ml-4 font-sans"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition duration-300 mt-4"
               >
                 Update Lead
               </button>
 
-              {/*Delete button */}
-              <button
-                type="button"
-                onClick={handleDelete}
-                 className="bg-red-200 rounded-2xl p-4  text-red-800 transform duration-100 hover:translate-x-1.5 hover:bg-red-100 ml-4"
-              >
-                Delete Lead
-              </button>
-
             </form>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );

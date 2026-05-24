@@ -1,14 +1,16 @@
 import mongoose, { Document } from 'mongoose'
 
-export interface IUser extends Document {
+export interface ILead extends Document {
   name: string
   email: string
   status: string
   source: string
   paid: number
+  date: string
+  time: string
 }
 
-const userSchema = new mongoose.Schema<IUser>({
+const leadSchema = new mongoose.Schema<ILead>({
   name: {
     type: String,
     required: true,
@@ -34,9 +36,24 @@ const userSchema = new mongoose.Schema<IUser>({
     type: Number,
     default: 0,
   },
+  date: {
+    type: String,
+    default: () =>
+      new Date().toISOString().split("T")[0]
+  },
+
+  time: {
+    type: String,
+    default: () =>
+      new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+  }
+
 })
 
-export default mongoose.model<IUser>(
+export default mongoose.model<ILead>(
   'Lead',
-  userSchema
+  leadSchema
 )
