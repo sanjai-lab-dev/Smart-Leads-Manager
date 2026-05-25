@@ -27,8 +27,7 @@ const corsOptions = {
 // Middleware
 app.use(cors(corsOptions))
 
-// IMPORTANT
-app.options('/.*/', cors(corsOptions))
+
 
 app.use(express.json())
 
