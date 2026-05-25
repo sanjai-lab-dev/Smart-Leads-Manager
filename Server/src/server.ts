@@ -16,9 +16,16 @@ const app = express()
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000', 'https://smart-leads-manager-u3md.vercel.app'],
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://smart-leads-manager-u3md.vercel.app'
+  ],
   credentials: true,
 }))
+
+app.options('*', cors())
+
 app.use(express.json())
 
 // Database Connection
