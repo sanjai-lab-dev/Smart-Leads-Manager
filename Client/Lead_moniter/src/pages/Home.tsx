@@ -25,35 +25,26 @@ import {
   Area,
 } from "recharts";
 
-import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { apiGet } from "../api";
 import type { Lead } from "../types";
 
 export default function Dashboard() {
-
   const [leads, setLeads] = useState<Lead[]>([]);
-
   const [loading, setLoading] =
     useState<boolean>(true);
 
   // Fetch Leads
   const fetchLeads = async () => {
-
     try {
-
-      const response = await apiGet('/leads');
+      const response = await apiGet("/leads");
 
       const data = await response.json();
 
       setLeads(data.data || []);
-
     } catch (error) {
-
       console.log(error);
-
     } finally {
-
       setLoading(false);
     }
   };
@@ -147,42 +138,42 @@ export default function Dashboard() {
     "#F59E0B",
     "#10B981",
     "#EF4444",
-    "indigo"
+    "indigo",
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100">
-
+    <div className="min-h-screen bg-gray-100 overflow-x-hidden">
       {/* Navbar */}
-      <div className="fixed top-0 left-0 w-full z-50 shadow-md">
+      {/* <div className="fixed top-0 left-0 w-full z-50 shadow-md">
         <Navbar />
-      </div>
+      </div> */}
 
-      <div className="flex pt-16">
-
+      <div className="flex">
         {/* Sidebar */}
-        <div className="fixed left-0 top-16 h-full w-64 bg-white shadow-lg z-40">
+        <div className="fixed ">
           <Sidebar />
         </div>
 
+
+
+
         {/* Main Content */}
-        <main className="ml-64 flex-1 p-8">
-
+        <main className="flex-1 md:ml-64 p-4 sm:p-6 lg:p-8">
           {/* Header */}
-          <div className="flex justify-between items-center mb-10">
-
-            <div>
-              <h1 className="text-4xl font-bold text-gray-800">
-                CRM Analytics Dashboard
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-5 mb-10 ">
+            <div className="text-center">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 " >
+                       CRM Dashboard
               </h1>
 
-              <p className="text-gray-500 mt-2">
+              <p className="text-gray-500 mt-2 text-sm sm:text-base">
                 Track lead performance and revenue growth
               </p>
             </div>
 
-            <div className="bg-indigo-600 text-white px-6 py-3 rounded-2xl shadow-lg flex items-center gap-3">
+            <div className="w-full sm:w-fit bg-indigo-600 text-white px-5 py-3 rounded-2xl shadow-lg flex items-center justify-center gap-3">
               <TrendingUp />
+
               <span className="font-semibold">
                 Growth Insights
               </span>
@@ -196,94 +187,80 @@ export default function Dashboard() {
             </div>
           ) : (
             <>
-
               {/* Top Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
-
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
                 {/* Total Leads */}
-                <div className="bg-linear-to-br from-indigo-500 to-indigo-800 p-6 rounded-3xl text-white shadow-xl  transform duration-300 ease-in-out hover:-translate-y-2">
-
+                <div className="bg-linear-to-br from-indigo-500 to-indigo-800 p-5 sm:p-6 rounded-3xl text-white shadow-xl transform duration-300 ease-in-out hover:-translate-y-2">
                   <div className="flex justify-between items-center">
-
                     <div>
-
                       <p className="text-indigo-100">
                         Total Leads
                       </p>
 
-                      <h1 className="text-5xl font-bold mt-4">
+                      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-4">
                         {leads.length}
                       </h1>
                     </div>
 
-                    <div className="bg-white/20 p-4 rounded-2xl">
-                      <Users size={34} />
+                    <div className="bg-white/20 p-3 sm:p-4 rounded-2xl">
+                      <Users size={30} />
                     </div>
                   </div>
                 </div>
 
                 {/* Revenue */}
-                <div className="bg-linear-to-br from-orange-400 to-orange-600 p-6 rounded-3xl text-white shadow-xl transform duration-300 ease-in-out hover:-translate-y-2">
-
+                <div className="bg-linear-to-br from-orange-400 to-orange-600 p-5 sm:p-6 rounded-3xl text-white shadow-xl transform duration-300 ease-in-out hover:-translate-y-2">
                   <div className="flex justify-between items-center">
-
                     <div>
-
                       <p className="text-orange-100">
                         Revenue
                       </p>
 
-                      <h1 className="text-4xl font-bold mt-4">
+                      <h1 className="text-3xl sm:text-4xl font-bold mt-4 warp-break-words">
                         ₹{totalRevenue}
                       </h1>
                     </div>
 
-                    <div className="bg-white/20 p-4 rounded-2xl">
-                      <CircleDollarSign size={34} />
+                    <div className="bg-white/20 p-3 sm:p-4 rounded-2xl">
+                      <CircleDollarSign size={30} />
                     </div>
                   </div>
                 </div>
 
                 {/* Qualified */}
-                <div className="bg-linear-to-br from-blue-500 to-blue-700 p-6 rounded-3xl text-white shadow-xl transform duration-300 ease-in-out hover:-translate-y-2">
-
+                <div className="bg-linear-to-br from-blue-500 to-blue-700 p-5 sm:p-6 rounded-3xl text-white shadow-xl transform duration-300 ease-in-out hover:-translate-y-2">
                   <div className="flex justify-between items-center">
-
                     <div>
-
                       <p className="text-blue-100">
                         Qualified
                       </p>
 
-                      <h1 className="text-5xl font-bold mt-4">
+                      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-4">
                         {qualifiedLeads}
                       </h1>
                     </div>
 
-                    <div className="bg-white/20 p-4 rounded-2xl">
-                      <BadgeCheck size={34} />
+                    <div className="bg-white/20 p-3 sm:p-4 rounded-2xl">
+                      <BadgeCheck size={30} />
                     </div>
                   </div>
                 </div>
 
                 {/* Closed */}
-                <div className="bg-linear-to-br from-green-500 to-green-700 p-6 rounded-3xl text-white shadow-xl transform duration-300 ease-in-out hover:-translate-y-2">
-
+                <div className="bg-linear-to-br from-green-500 to-green-700 p-5 sm:p-6 rounded-3xl text-white shadow-xl transform duration-300 ease-in-out hover:-translate-y-2">
                   <div className="flex justify-between items-center">
-
                     <div>
-
                       <p className="text-green-100">
                         Closed Deals
                       </p>
 
-                      <h1 className="text-5xl font-bold mt-4">
+                      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-4">
                         {closedLeads}
                       </h1>
                     </div>
 
-                    <div className="bg-white/20 p-4 rounded-2xl">
-                      <UserRound size={34} />
+                    <div className="bg-white/20 p-3 sm:p-4 rounded-2xl">
+                      <UserRound size={30} />
                     </div>
                   </div>
                 </div>
@@ -291,25 +268,21 @@ export default function Dashboard() {
 
               {/* Charts */}
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-10">
-
                 {/* Bar Chart */}
-                <div className="bg-white p-6 rounded-3xl shadow-lg">
-
+                <div className="bg-white p-4 sm:p-6 rounded-3xl shadow-lg">
                   <div className="flex items-center gap-3 mb-6">
-
                     <Activity className="text-indigo-600" />
 
-                    <h2 className="text-2xl font-bold text-gray-800">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
                       Lead Status Overview
                     </h2>
                   </div>
 
                   <ResponsiveContainer
                     width="100%"
-                    height={300}
+                    height={250}
                   >
                     <BarChart data={statusData}>
-
                       <CartesianGrid strokeDasharray="3 3" />
 
                       <XAxis dataKey="name" />
@@ -336,40 +309,35 @@ export default function Dashboard() {
                 </div>
 
                 {/* Pie Chart */}
-                <div className="bg-white p-6 rounded-3xl shadow-lg">
-
+                <div className="bg-white p-4 sm:p-6 rounded-3xl shadow-lg">
                   <div className="flex items-center gap-3 mb-6">
-
                     <Share2 className="text-pink-600" />
 
-                    <h2 className="text-2xl font-bold text-gray-800">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
                       Lead Sources
                     </h2>
                   </div>
 
                   <ResponsiveContainer
                     width="100%"
-                    height={300}
+                    height={250}
                   >
-
                     <PieChart>
-
                       <Pie
                         data={sourceData}
                         dataKey="leads"
                         nameKey="name"
-                        outerRadius={110}
+                        outerRadius={80}
                         label
                       >
-
                         {sourceData.map(
                           (_, index) => (
                             <Cell
                               key={index}
                               fill={
                                 COLORS[
-                                  index %
-                                    COLORS.length
+                                index %
+                                COLORS.length
                                 ]
                               }
                             />
@@ -378,31 +346,26 @@ export default function Dashboard() {
                       </Pie>
 
                       <Tooltip />
-
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
               </div>
 
               {/* Revenue Area Chart */}
-              <div className="bg-white p-6 rounded-3xl shadow-lg mb-10">
-
+              <div className="bg-white p-4 sm:p-6 rounded-3xl shadow-lg mb-10">
                 <div className="flex items-center gap-3 mb-6">
-
                   <TrendingUp className="text-green-600" />
 
-                  <h2 className="text-2xl font-bold text-gray-800">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
                     Revenue Analytics
                   </h2>
                 </div>
 
                 <ResponsiveContainer
                   width="100%"
-                  height={350}
+                  height={280}
                 >
-
                   <AreaChart data={leads}>
-
                     <defs>
                       <linearGradient
                         id="colorRevenue"
@@ -411,7 +374,6 @@ export default function Dashboard() {
                         x2="0"
                         y2="1"
                       >
-
                         <stop
                           offset="5%"
                           stopColor="#6366F1"
@@ -446,33 +408,27 @@ export default function Dashboard() {
               </div>
 
               {/* Recent Leads */}
-              <div className="bg-white rounded-3xl p-6 shadow-lg">
-
+              <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-lg">
                 <div className="flex items-center gap-3 mb-8">
-
                   <Clock3 className="text-orange-500" />
 
-                  <h2 className="text-2xl font-bold text-gray-800">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
                     Recent Leads
                   </h2>
                 </div>
 
                 <div className="space-y-5">
-
                   {leads.slice(0, 6).map((lead) => (
-
                     <div
                       key={lead._id}
-                      className="flex justify-between items-center p-5 bg-gray-50 hover:bg-indigo-50 rounded-2xl transition-all duration-300"
+                      className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 p-5 bg-gray-50 hover:bg-indigo-50 rounded-2xl transition-all duration-300"
                     >
-
                       <div>
-
-                        <h1 className="font-bold text-lg text-gray-800">
+                        <h1 className="font-bold text-lg text-gray-800 warp-break-words">
                           {lead.name}
                         </h1>
 
-                        <p className="text-gray-500">
+                        <p className="text-gray-500 break-all">
                           {lead.email}
                         </p>
 
@@ -481,8 +437,7 @@ export default function Dashboard() {
                         </p>
                       </div>
 
-                      <div className="flex gap-3 flex-wrap">
-
+                      <div className="flex flex-wrap gap-2">
                         <span className="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full text-sm font-semibold">
                           {lead.source}
                         </span>
@@ -493,17 +448,16 @@ export default function Dashboard() {
 
                         <span
                           className={`px-4 py-2 rounded-full text-sm font-semibold
-                          ${
-                            lead.status === "Closed"
+                          ${lead.status === "Closed"
                               ? "bg-green-100 text-green-700"
                               : lead.status ===
                                 "Qualified"
-                              ? "bg-blue-100 text-blue-700"
-                              : lead.status ===
-                                "Contacted"
-                              ? "bg-yellow-100 text-yellow-700"
-                              : "bg-gray-200 text-gray-700"
-                          }`}
+                                ? "bg-blue-100 text-blue-700"
+                                : lead.status ===
+                                  "Contacted"
+                                  ? "bg-yellow-100 text-yellow-700"
+                                  : "bg-gray-200 text-gray-700"
+                            }`}
                         >
                           {lead.status}
                         </span>

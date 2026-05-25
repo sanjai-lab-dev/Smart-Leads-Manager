@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import { apiGet, getUser, removeToken } from '../api';
 import { useNavigate } from 'react-router-dom';
@@ -44,19 +43,15 @@ export default function Profile() {
 
   return (
     <div className="h-screen bg-gray-100 overflow-hidden">
-      {/* Navbar */}
-      <div className="fixed top-0 left-0 w-full z-50 shadow-md">
-        <Navbar />
-      </div>
-
-      <div className="flex pt-16 h-screen">
+   
+      <div className="flex">
         {/* Sidebar */}
-        <div className="fixed left-0 top-16 h-full w-64 bg-white shadow-lg z-40">
+        <div className="fixed md:w-64 bg-white shadow-lg z-40">
           <Sidebar />
         </div>
 
         {/* Main Content */}
-        <main className="ml-64 flex-1 overflow-y-auto p-10">
+        <main className="md:ml-64 flex-1 overflow-y-auto p-10 pt-20 text-center">
           
           <div className="max-w-3xl mx-auto">
             <h1 className="text-3xl font-bold text-gray-800 mb-8">

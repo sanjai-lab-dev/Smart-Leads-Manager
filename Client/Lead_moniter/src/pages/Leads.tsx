@@ -17,7 +17,6 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import ExportCSV from "./ExportCSV";
 import { apiGet, apiDelete } from "../api";
@@ -174,38 +173,115 @@ export default function Leads() {
   return (
     <div className="h-screen bg-linear-to-br from-gray-100 to-indigo-50 overflow-hidden">
 
-      {/* Navbar */}
-      <div className="fixed top-0 left-0 w-full z-50 shadow-md">
-        <Navbar />
-      </div>
 
-      <div className="flex pt-16 h-screen">
+
+      <div className="flex  h-screen">
 
         {/* Sidebar */}
-        <div className="fixed left-0 top-16 h-full w-64 bg-white shadow-lg z-40">
+        <div className="fixed shadow-lg z-40">
           <Sidebar />
         </div>
 
         {/* Main Content */}
-        <main className="ml-64 flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-6 pt-20 overflow-x-hidden w-screen xl:w-auto lg:ml-70">
 
           {/* Header */}
           <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
 
-            <div>
 
-              <h1 className="text-4xl font-bold text-gray-800 flex items-center gap-3">
-                <Users className="text-indigo-600" />
-                Leads Manager
-              </h1>
+            {/* Search & Filters */}
+            <div className="z-30 w-[95%] sm:w-[90%] lg:w-auto bg-white/90 backdrop-blur-lg rounded-3xl p-4 sm:p-5 shadow-lg mb-8 flex flex-col xl:flex-row gap-4 border border-gray-100" >
+              {/* Search */}
+              <div className="relative flex-1 min-w-full lg:min-w-[250px]">
 
-              <p className="text-gray-500 mt-2">
-                Manage and track all customer leads
-              </p>
+                <Search
+                  className="absolute left-3 top-3.5 text-gray-400"
+                  size={20}
+                />
+
+                <input
+                  type="text"
+                  placeholder="Search leads..."
+                  value={search}
+                  onChange={(e) =>
+                    setSearch(e.target.value)
+                  }
+                  className="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+
+              {/* Status Filter */}
+              <div className="flex flex-row w-full gap-2" >
+                <select
+                  value={statusFilter}
+                  onChange={(e) =>
+                    setStatusFilter(
+                      e.target.value
+                    )
+                  }
+                  className="grow border border-gray-200 rounded-xl px-4 py-3 inline "
+                >
+                  <option value="All">
+                    All Status
+                  </option>
+
+                  <option value="New">
+                    New
+                  </option>
+
+                  <option value="Contacted">
+                    Contacted
+                  </option>
+
+                  <option value="Qualified">
+                    Qualified
+                  </option>
+
+                  <option value="Closed">
+                    Closed
+                  </option>
+                </select>
+
+                {/* Source Filter */}
+                <select
+                  value={sourceFilter}
+                  onChange={(e) =>
+                    setSourceFilter(
+                      e.target.value
+                    )
+                  }
+                  className="grow lg:w-auto border border-gray-200 rounded-xl px-4 py-3"
+                >
+                  <option value="All">
+                    All Sources
+                  </option>
+
+                  <option value="Website">
+                    Website
+                  </option>
+
+                  <option value="Instagram">
+                    Instagram
+                  </option>
+
+                  <option value="LinkedIn">
+                    LinkedIn
+                  </option>
+
+                  <option value="Referral">
+                    Referral
+                  </option>
+
+                  <option value="Facebook">
+                    Facebook
+                  </option>
+                </select>
+              </div>
             </div>
+            {/*Expoet and Lead create buttons */}
             <div className="flex flex-row gap-5">
-              <div
-              >
+
+              <div >
                 <ExportCSV />
               </div>
 
@@ -311,95 +387,6 @@ export default function Leads() {
                 </div>
               </div>
             </div>
-          </div>
-{/* 
-          Search & Filters */}
-          <div className="fixed left-[40%] top-20 z-30 bg-white/90 backdrop-blur-lg rounded-3xl p-5 shadow-lg mb-8 flex flex-wrap gap-4 border border-gray-100">
-
-            {/* Search */}
-            <div className="relative flex-1 min-w-[250px]">
-
-              <Search
-                className="absolute left-3 top-3.5 text-gray-400"
-                size={20}
-              />
-
-              <input
-                type="text"
-                placeholder="Search leads..."
-                value={search}
-                onChange={(e) =>
-                  setSearch(e.target.value)
-                }
-                className="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-
-            {/* Status Filter */}
-            <select
-              value={statusFilter}
-              onChange={(e) =>
-                setStatusFilter(
-                  e.target.value
-                )
-              }
-              className="border border-gray-200 rounded-xl px-4 py-3"
-            >
-              <option value="All">
-                All Status
-              </option>
-
-              <option value="New">
-                New
-              </option>
-
-              <option value="Contacted">
-                Contacted
-              </option>
-
-              <option value="Qualified">
-                Qualified
-              </option>
-
-              <option value="Closed">
-                Closed
-              </option>
-            </select>
-
-            {/* Source Filter */}
-            <select
-              value={sourceFilter}
-              onChange={(e) =>
-                setSourceFilter(
-                  e.target.value
-                )
-              }
-              className="border border-gray-200 rounded-xl px-4 py-3"
-            >
-              <option value="All">
-                All Sources
-              </option>
-
-              <option value="Website">
-                Website
-              </option>
-
-              <option value="Instagram">
-                Instagram
-              </option>
-
-              <option value="LinkedIn">
-                LinkedIn
-              </option>
-
-              <option value="Referral">
-                Referral
-              </option>
-
-              <option value="Facebook">
-                Facebook
-              </option>
-            </select>
           </div>
 
           {/* Loading */}

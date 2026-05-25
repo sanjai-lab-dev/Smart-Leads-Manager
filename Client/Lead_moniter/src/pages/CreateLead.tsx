@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import Navbar from '../components/Navbar'
+
 import Sidebar from '../components/Sidebar'
 import Input from '../components/Input'
 import Button from '../components/Button'
@@ -86,20 +86,16 @@ export default function CreateLead() {
   return (
     <div className="min-h-screen bg-gray-100">
 
-      {/* Navbar */}
-      <div className="fixed top-0 left-0 w-full z-50 shadow-md">
-        <Navbar />
-      </div>
-
-      <div className="flex pt-16">
+  
+      <div className="flex  ">
 
         {/* Sidebar */}
-        <div className="fixed left-0 top-16 h-full w-64 bg-white shadow-lg z-40">
+        <div className="fixed left-0 md:w-64 bg-white shadow-lg z-40">
           <Sidebar />
         </div>
 
         {/* Main Content */}
-        <main className="ml-64 flex-1 p-8">
+        <main className="md:ml-64 flex-1 p-8">
 
           <div className='flex justify-center items-center flex-col'>
 

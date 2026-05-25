@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
 import { apiGet, apiDelete, apiPut } from "../api";
 import type { User as UserType } from "../types";
 
@@ -88,23 +87,20 @@ export default function User() {
 
   return (
     <div className="h-screen bg-gray-100 overflow-hidden">
-      {/* Navbar */}
-      <div className="fixed top-0 left-0 w-full z-50 shadow-md">
-        <Navbar />
-      </div>
+    
 
-      <div className="flex pt-16 h-screen">
+      <div >
         {/* Sidebar */}
-        <div className="fixed left-0 top-16 h-full w-64 bg-white shadow-lg z-40">
+        <div className="fixed  shadow-lg z-40">
           <Sidebar />
         </div>
 
         {/* Main Content */}
-        <div className="ml-64 flex-1 overflow-y-auto p-6">
+        <div className="md:ml-64 flex-1 overflow-y-auto p-6 pt-20">
           {/* Heading */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
+              <h1 className=" text-md xl:text-3xl font-bold text-gray-800 flex items-center gap-3">
                 <Users className="text-blue-600" />
                 Users Management
               </h1>
