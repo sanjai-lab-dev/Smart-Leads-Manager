@@ -4,6 +4,7 @@ import { apiPost, setToken, setUser } from "../api";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -11,11 +12,12 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setError("");
     setLoading(true);
 
     try {
-      const response = await apiPost('/auth/login', {
+      const response = await apiPost("/auth/login", {
         email,
         password,
       });
@@ -25,6 +27,7 @@ export default function LoginPage() {
       if (response.ok && data.token) {
         setToken(data.token);
         setUser(data.data);
+
         navigate("/home");
       } else {
         setError(data.message || "Login failed");
@@ -38,28 +41,44 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f7fb] flex items-center justify-center px-4">
-      {/* Background Blur */}
-      <div className="absolute top-0 left-0 w-72 h-72 bg-blue-200/40 blur-3xl rounded-full"></div>
-      <div className="absolute bottom-0 right-0 w-72 h-72 bg-cyan-200/40 blur-3xl rounded-full"></div>
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-tl from-green-900 via-cyan-900 to-slate-950 flex items-center justify-center px-4">
+
+      {/* Blur Background */}
+      <div className="absolute top-0 left-0 w-72 h-72 bg-cyan-400/20 blur-3xl rounded-full"></div>
+
+      <div className="absolute bottom-0 right-0 w-72 h-72 bg-green-400/20 blur-3xl rounded-full"></div>
+
+      {/* Decorative Stars */}
+      <div className="absolute -top-40 -left-40 text-[700px] font-black rotate-12 bg-gradient-to-tr from-cyan-700/20 to-green-700/20 bg-clip-text text-transparent select-none pointer-events-none">
+        *
+      </div>
+
+      <div className="absolute -bottom-52 -right-32 text-[700px] font-black -rotate-12 bg-gradient-to-tr from-cyan-700/20 to-green-700/20 bg-clip-text text-transparent select-none pointer-events-none">
+        *
+      </div>
+      
+      <div className="absolute -bottom-102 left-80 text-[700px] font-black -rotate-12 bg-gradient-to-tr from-cyan-700/20 to-green-700/20 bg-clip-text text-transparent select-none pointer-events-none">
+        *
+      </div>
 
       {/* Login Card */}
-      <div className="relative w-full max-w-md bg-white/90 backdrop-blur-xl border border-gray-200 rounded-3xl shadow-xl p-8">
+      <div className="relative w-full max-w-md rounded-3xl border border-white/10 bg-white/10 backdrop-blur-2xl shadow-2xl p-8">
 
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-amber-600 tracking-tight">
+
+          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-300 to-green-300 bg-clip-text text-transparent">
             Welcome Back
           </h1>
 
-          <p className="text-gray-500 mt-2 text-sm leading-relaxed">
+          <p className="mt-3 text-sm leading-relaxed text-gray-300">
             Sign in to continue managing your CRM dashboard and customer leads.
           </p>
         </div>
 
-        {/* Error Message */}
+        {/* Error */}
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl text-center">
+          <div className="mb-5 rounded-2xl border border-red-400/30 bg-red-500/10 p-3 text-center text-sm text-red-300">
             {error}
           </div>
         )}
@@ -69,7 +88,7 @@ export default function LoginPage() {
 
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="mb-2 block text-sm font-medium text-gray-200">
               Email Address
             </label>
 
@@ -78,21 +97,23 @@ export default function LoginPage() {
               placeholder="name@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+              className="w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-gray-400 outline-none transition-all focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20"
               required
             />
           </div>
 
           {/* Password */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium text-gray-700">
+
+            <div className="mb-2 flex items-center justify-between">
+
+              <label className="text-sm font-medium text-gray-200">
                 Password
               </label>
 
               <a
                 href="#"
-                className="text-sm text-blue-600 hover:text-blue-700"
+                className="text-sm text-cyan-300 hover:text-cyan-200"
               >
                 Forgot Password?
               </a>
@@ -103,19 +124,20 @@ export default function LoginPage() {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+              className="w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-gray-400 outline-none transition-all focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20"
               required
             />
           </div>
 
           {/* Remember */}
           <div className="flex items-center gap-2">
+
             <input
               type="checkbox"
-              className="h-4 w-4 rounded border-gray-300 text-blue-600"
+              className="h-4 w-4 rounded border-gray-300 text-cyan-500"
             />
 
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-gray-300">
               Remember me
             </span>
           </div>
@@ -124,7 +146,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-2xl bg-linear-to-r from-blue-600 to-cyan-500 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:scale-[1.01] hover:shadow-xl disabled:opacity-50 disabled:hover:scale-100"
+            className="w-full rounded-2xl bg-gradient-to-r from-cyan-500 to-green-500 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-cyan-500/30 disabled:opacity-50 disabled:hover:scale-100"
           >
             {loading ? "Signing In..." : "Sign In"}
           </button>
@@ -132,11 +154,13 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="mt-8 text-center">
-          <p className="text-sm text-gray-500">
+
+          <p className="text-sm text-gray-300">
             Don&apos;t have an account?{" "}
+
             <a
-              href="https://smart-leads-manager-u3md.vercel.app//register"
-              className="font-semibold text-blue-600 hover:text-blue-700"
+              href="https://smart-leads-manager-u3md.vercel.app/register"
+              className="font-semibold text-cyan-300 hover:text-cyan-200"
             >
               Create Account
             </a>
