@@ -35,8 +35,11 @@ app.get('/api/health', (req, res) => {
 })
 
 // Start Server
-const PORT = process.env.PORT || 5000
+const PORT = Number(process.env.PORT) || 10000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+const server = app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+server.keepAliveTimeout = 120000;
+server.headersTimeout = 120000;
