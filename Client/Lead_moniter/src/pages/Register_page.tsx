@@ -31,7 +31,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const response = await apiPost("/api/auth/register", formData);
+      const response = await apiPost("/register", formData);
 
       const data = await response.json();
 
