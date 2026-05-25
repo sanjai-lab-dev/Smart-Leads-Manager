@@ -12,15 +12,23 @@ import userRoutes from './routes/userRoutes'
 
 const app = express()
 
-// Middleware
-app.use(cors({
+// CORS CONFIG
+const corsOptions = {
   origin: [
     'http://localhost:5173',
     'http://localhost:3000',
     'https://smart-leads-manager-u3md.vercel.app'
   ],
   credentials: true,
-}))
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}
+
+// Middleware
+app.use(cors(corsOptions))
+
+// IMPORTANT
+app.options('/.*/', cors(corsOptions))
 
 app.use(express.json())
 
