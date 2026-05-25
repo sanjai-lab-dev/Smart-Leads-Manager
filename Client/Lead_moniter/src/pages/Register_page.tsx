@@ -39,7 +39,6 @@ export default function RegisterPage() {
       if (response.ok && data.token) {
         setToken(data.token)
         setUser(data.data)
-        console.log(data.data)
         navigate('/home')
       } else {
         setError(data.message || 'Registration failed')

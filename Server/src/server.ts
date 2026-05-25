@@ -51,6 +51,12 @@ app.use(express.json())
 
 // Database Connection
 connectDB()
+
+
+app.use((req, res, next) => {
+  console.log('REQUEST:', req.method, req.url)
+  next()
+})
 app.get('/', (req, res) => {
   res.send('API Running')
 })
@@ -73,3 +79,12 @@ const server = app.listen(PORT, "0.0.0.0", () => {
 
 server.keepAliveTimeout = 120000;
 server.headersTimeout = 120000;
+
+app.use((err: any, req: any, res: any, next: any) => {
+  console.error('GLOBAL ERROR:', err)
+
+  res.status(500).json({
+    message: 'Internal Server Error',
+    error: err.message,
+  })
+})
