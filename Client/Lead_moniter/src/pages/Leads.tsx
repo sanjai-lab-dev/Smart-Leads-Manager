@@ -20,7 +20,7 @@ import {
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import ExportCSV from "./ExportCSV";
-import { apiGet, apiDelete, apiPost } from "../api";
+import { apiGet, apiDelete } from "../api";
 import type { Lead } from "../types";
 
 export default function Leads() {
