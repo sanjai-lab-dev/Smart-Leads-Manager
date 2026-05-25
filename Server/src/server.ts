@@ -16,10 +16,12 @@ const app = express()
 
 // Manual CORS Middleware
 app.use((req, res, next) => {
-  res.header(
-    'Access-Control-Allow-Origin',
-    'https://smart-leads-manager-u3md.vercel.app'
-  )
+  const origin = req.headers.origin;
+  if (origin) {
+    res.header('Access-Control-Allow-Origin', origin);
+  } else {
+    res.header('Access-Control-Allow-Origin', '*');
+  }
 
   res.header(
     'Access-Control-Allow-Headers',
