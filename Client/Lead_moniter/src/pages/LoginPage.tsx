@@ -155,7 +155,7 @@ export default function LoginPage() {
             Don&apos;t have an account?{" "}
 
             <a
-              href="https://smart-leads-manager-u3md.vercel.app/register"
+              href="https://smart-leads-manager-rho.vercel.app/register"
               className="font-semibold text-cyan-300 hover:text-cyan-200"
             >
               Create Account
