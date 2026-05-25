@@ -1,5 +1,3 @@
-// server.ts
-
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -23,8 +21,6 @@ app.use(cors({
   ],
   credentials: true,
 }))
-
-app.options('*', cors())
 
 app.use(express.json())
 
