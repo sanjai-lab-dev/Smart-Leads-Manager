@@ -51,7 +51,9 @@ app.use(express.json())
 
 // Database Connection
 connectDB()
-
+app.get('/', (req, res) => {
+  res.send('API Running')
+})
 // Routes
 app.use('/api/auth', authRoutes)
 app.use('/api/leads', leadRoutes)
