@@ -1,6 +1,13 @@
 // Centralized API helper with JWT auto-attach
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://smart-leads-manager-u5mc.onrender.com/api'
+let rawApiBase = import.meta.env.VITE_API_URL || 'https://smart-leads-manager-u5mc.onrender.com/api';
+// Normalize: Remove trailing slashes
+rawApiBase = rawApiBase.replace(/\/+$/, '');
+// Ensure it ends with /api
+if (!rawApiBase.endsWith('/api')) {
+  rawApiBase += '/api';
+}
+const API_BASE = rawApiBase;
 
 // Get stored token
 const getToken = (): string | null => {
