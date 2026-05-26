@@ -35,18 +35,18 @@ const router = createBrowserRouter([
      errorElement:<Error/>
   },
   {
-    path: '/Newlead',
+    path: '/newlead',
     element: <CreateLead />,
      errorElement:<Error/>
 
   },
   {
-    path:"/Leads",
+    path:"/leads",
     element:<Leads/>,
      errorElement:<Error/>
   },
   {
-    path:"/LeadData/:id",
+    path:"/leadData/:id",
     element:<LeadData/>,
      errorElement:<Error/>
   },

@@ -183,7 +183,7 @@ export default function Leads() {
         </div>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto p-6 pt-20 overflow-x-hidden w-screen xl:w-auto lg:ml-70">
+        <main className="flex-1 md:pl-70  overflow-y-auto p-6 pt-10= overflow-x-hidden w-screen xl:w-auto ">
 
           {/* Header */}
           <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
@@ -287,7 +287,7 @@ export default function Leads() {
 
               <button
                 onClick={() =>
-                  navigate("/Newlead")
+                  navigate("/newlead")
                 }
                 className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-2xl shadow-lg flex items-center gap-3 transition-all duration-300 hover:scale-105"
               >

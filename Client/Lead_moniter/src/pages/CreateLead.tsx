@@ -68,7 +68,7 @@ export default function CreateLead() {
           time: ''
         })
 
-        navigate('/Leads')
+        navigate('/leads')
 
       } else {
 
