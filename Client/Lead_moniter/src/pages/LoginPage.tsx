@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { apiPost, setToken, setUser } from "../api";
 
 export default function LoginPage() {
@@ -154,12 +154,12 @@ export default function LoginPage() {
           <p className="text-sm text-gray-300">
             Don&apos;t have an account?{" "}
 
-            <a
-              href="https://smart-leads-manager-rho.vercel.app/register"
+            <Link
+              to="/register"
               className="font-semibold text-cyan-300 hover:text-cyan-200"
             >
               Create Account
-            </a>
+            </Link>
           </p>
         </div>
       </div>
